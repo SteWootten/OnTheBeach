@@ -31,6 +31,11 @@ describe JobList do
 			expect(job_list.jobs).to eql "abc"
 		end
 
+		it "returns a sequence where 'c' is before 'b' when 'b' is dependant on 'c'" do
+			job_list = JobList.new "a =>\nb => c\nc =>\n"
+			expect(job_list.jobs).to eql "acb"
+		end
+
 		context "job_id and dependant_id are the same" do
 
 			it "exits the application when a SelfDependancyError is raised" do
