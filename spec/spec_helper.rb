@@ -1,2 +1,2 @@
-require_relative '../job_list'
-require_relative '../job'
+require_relative '../lib/job_list'
+require_relative '../lib/job'

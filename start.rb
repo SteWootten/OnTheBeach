@@ -1,4 +1,4 @@
-require_relative 'job_list'
+require_relative 'lib/job_list'
 
 puts "List of jobs please. Put each job on a new line and write 'END' after your last job."
 
