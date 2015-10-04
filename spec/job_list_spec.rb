@@ -21,11 +21,15 @@ describe JobList do
 			expect(job_list.jobs).to eql ""
 		end
 
-		it "returns the jobs" do
-			job_list = JobList.new "a =>\nb => c"
-			expect(job_list.jobs).to eql "a =>\nb => c"
+		it "returns the job when only given 1 job" do
+			job_list = JobList.new "a =>\n"
+			expect(job_list.jobs).to eql "a"
 		end
 
+		it "returns a sequence of jobs when there are no dependencies" do
+			job_list = JobList.new "a =>\nb =>\nc =>\n"
+			expect(job_list.jobs).to eql "abc"
+		end
 	end
 
 end
