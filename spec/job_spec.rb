@@ -16,18 +16,18 @@ describe Job do
 
 	describe '#job' do
 
-		it "returns the job" do
+		it "returns the job id" do
 			job = Job.new "a", "b"
-			expect(job.job).to eql "a"			
+			expect(job.job_id).to eql "a"			
 		end
 
 	end
 
 	describe '#dependant' do
 	  
-		it "returns the jobs dependant job" do
+		it "returns the jobs dependant job id" do
 			job = Job.new "a", "b"
-			expect(job.dependant).to eql "b"
+			expect(job.dependant_id).to eql "b"
 		end
 
 	end
