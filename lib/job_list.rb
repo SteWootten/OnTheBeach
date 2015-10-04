@@ -24,7 +24,7 @@ class JobList
 			dependacy_index = array_of_job_objects.find_index {|job| dependant_job.dependancy_id == job.job_id}
 			dependant_index = array_of_job_objects.find_index {|job| dependant_job.job_id == job.job_id}
 
-			array_of_job_objects.insert(dependant_index, array_of_job_objects.delete_at(dependacy_index))
+			array_of_job_objects.insert(dependant_index, array_of_job_objects.delete_at(dependacy_index)) if dependacy_index > dependant_index
 		end
 		@jobs = array_of_job_objects
 
