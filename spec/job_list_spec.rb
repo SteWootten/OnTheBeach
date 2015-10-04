@@ -14,4 +14,18 @@ describe JobList do
 
 	end
 
+	describe '#jobs' do
+
+		it "returns an empty sequence given no jobs" do
+			job_list = JobList.new ""
+			expect(job_list.jobs).to eql ""
+		end
+
+		it "returns the jobs" do
+			job_list = JobList.new "a =>\nb => c"
+			expect(job_list.jobs).to eql "a =>\nb => c"
+		end
+
+	end
+
 end
