@@ -12,7 +12,7 @@ describe Job do
 			expect{Job.new ""}.to raise_error(ArgumentError)
 		end
 
-		it "raises a SelfDependancyError when the job_id is the same as the dependant_id" do
+		it "raises a SelfDependancyError when the job_id is the same as the dependancy_id" do
 			expect{Job.new "a", "a"}.to raise_error(SelfDependancyError)
 		end
 
@@ -27,11 +27,11 @@ describe Job do
 
 	end
 
-	describe '#dependant' do
+	describe '#dependancy' do
 	  
-		it "returns the jobs dependant job id" do
+		it "returns the jobs dependancy job id" do
 			job = Job.new "a", "b"
-			expect(job.dependant_id).to eql "b"
+			expect(job.dependancy_id).to eql "b"
 		end
 
 	end

@@ -36,7 +36,7 @@ describe JobList do
 			expect(job_list.jobs).to eql "acb"
 		end
 
-		context "job_id and dependant_id are the same" do
+		context "job_id and dependancy_id are the same" do
 
 			it "exits the application when a SelfDependancyError is raised" do
 				expect{JobList.new "a => a\n"}.to raise_error(SystemExit)
