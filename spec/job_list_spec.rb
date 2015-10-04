@@ -30,6 +30,22 @@ describe JobList do
 			job_list = JobList.new "a =>\nb =>\nc =>\n"
 			expect(job_list.jobs).to eql "abc"
 		end
+
+		context "job_id and dependant_id are the same" do
+
+			it "exits the application when a SelfDependancyError is raised" do
+				expect{JobList.new "a => a\n"}.to raise_error(SystemExit)
+			end
+
+			it "outputs a message to stdout" do
+				expect{
+					begin JobList.new "a => a\n"
+					rescue SystemExit
+					end
+				}.to output("Sorry, a can't be dependant on itself\n").to_stdout
+			end
+			
+		end
 	end
 
 end

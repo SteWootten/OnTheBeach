@@ -18,6 +18,10 @@ class JobList
 			array_of_job_objects << Job.new(job_and_dependant[0], job_and_dependant[1])
 		end
 		@jobs = array_of_job_objects
+
+	rescue SelfDependancyError => e
+		puts e.message
+		abort
 	end
 
 	def jobs

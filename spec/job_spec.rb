@@ -12,6 +12,10 @@ describe Job do
 			expect{Job.new ""}.to raise_error(ArgumentError)
 		end
 
+		it "raises a SelfDependancyError when the job_id is the same as the dependant_id" do
+			expect{Job.new "a", "a"}.to raise_error(SelfDependancyError)
+		end
+
 	end
 
 	describe '#job' do
