@@ -18,9 +18,10 @@ class JobList
 			array_of_job_objects << Job.new(job_and_dependancy[0], job_and_dependancy[1])
 		end
 		
+		circular_dependancies?(array_of_job_objects.reject { |job| job.dependancy_id == "" })
 		@jobs = order_jobs(array_of_job_objects)
 
-	rescue SelfDependancyError => e
+	rescue SelfDependancyError, CircularDependancyError => e
 		puts e.message
 		abort
 	end
@@ -43,6 +44,25 @@ class JobList
 		end
 
 		return array_of_job_objects
+	end
+
+	def circular_dependancies?(array_of_job_objects)
+		job_and_dependancy = Hash.new
+
+		array_of_job_objects.each do |job|
+			x_id = recursive_find(job_and_dependancy, job.job_id)
+			y_id = recursive_find(job_and_dependancy, job.dependancy_id)
+
+			raise CircularDependancyError, "Circular dependancy detected!" if x_id == y_id
+
+			# no circular dependancy so add dependancy to job for next cycle check
+			job_and_dependancy[x_id] = y_id
+		end
+	end
+
+	def recursive_find(job_and_dependancy, id)
+		return id if job_and_dependancy[id].nil? # returns id if no dependancy for that job yet
+		recursive_find(job_and_dependancy, job_and_dependancy[id]) # if there is a dependancy we recursivley find the dependancies depandancy
 	end
 
 end

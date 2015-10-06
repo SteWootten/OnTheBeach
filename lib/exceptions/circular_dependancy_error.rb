@@ -1,0 +1,2 @@
+class CircularDependancyError < StandardError
+end

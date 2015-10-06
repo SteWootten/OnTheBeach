@@ -41,6 +41,10 @@ describe JobList do
 			expect(job_list.jobs).to eql "afcbde"
 		end
 
+		it "exits the application when a CircularDependancyError is raised" do
+			expect{JobList.new "a => b\nb => c\nc => a\n"}.to raise_error(SystemExit)
+		end
+
 		context "job_id and dependancy_id are the same" do
 
 			it "exits the application when a SelfDependancyError is raised" do
