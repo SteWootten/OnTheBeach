@@ -63,6 +63,10 @@ describe JobList do
 				expect{JobList.new "a => b\nb => c\nc => a\n"}.to raise_error(SystemExit)
 			end
 
+			it "exits the application when a CircularDependancyError is raised with a longer circular dependancy" do
+				expect{JobList.new "a =>\nb => c\nc => f\nd => a\ne =>\nf => b"}.to raise_error(SystemExit)
+			end
+
 			it "outputs the exception message to stdout" do
 				expect{
 					begin JobList.new "a => b\nb => c\nc => a\n"
