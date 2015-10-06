@@ -27,8 +27,7 @@ class JobList
 	end
 
 	def jobs
-		return "" if @jobs.length == 0
-		@jobs.collect { |job| job.job_id }.join("")
+		@jobs.empty? ? "" : @jobs.collect { |job| job.job_id }.join("")
 	end
 
 	private
