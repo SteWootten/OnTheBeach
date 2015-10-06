@@ -41,10 +41,6 @@ describe JobList do
 			expect(job_list.jobs).to eql "afcbde"
 		end
 
-		it "exits the application when a CircularDependancyError is raised" do
-			expect{JobList.new "a => b\nb => c\nc => a\n"}.to raise_error(SystemExit)
-		end
-
 		context "job_id and dependancy_id are the same" do
 
 			it "exits the application when a SelfDependancyError is raised" do
@@ -59,6 +55,21 @@ describe JobList do
 				}.to output("Sorry, a can't be dependant on itself\n").to_stdout
 			end
 			
+		end
+
+		context "jobs with circular dependencies" do
+			
+			it "exits the application when a CircularDependancyError is raised with a simple circular dependancy" do
+				expect{JobList.new "a => b\nb => c\nc => a\n"}.to raise_error(SystemExit)
+			end
+
+			it "outputs the exception message to stdout" do
+				expect{
+					begin JobList.new "a => b\nb => c\nc => a\n"
+					rescue SystemExit
+					end
+				}.to output("Circular dependancy detected!\n").to_stdout
+			end
 		end
 	end
 
