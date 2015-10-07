@@ -18,7 +18,7 @@ class JobList
 			all_jobs << Job.new(job_and_dependancy[0], job_and_dependancy[1])
 		end
 		
-		circular_dependancies?(all_jobs.reject { |job| job.dependancy_id == "" })
+		check_for_circular_dependancies(all_jobs.reject { |job| job.dependancy_id == "" })
 		@jobs = order_jobs(all_jobs)
 
 	rescue SelfDependancyError, CircularDependancyError => e
@@ -45,7 +45,7 @@ class JobList
 		return all_jobs
 	end
 
-	def circular_dependancies?(all_jobs)
+	def check_for_circular_dependancies(all_jobs)
 		job_and_dependancy = Hash.new
 
 		all_jobs.each do |job|
