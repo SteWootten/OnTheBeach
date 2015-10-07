@@ -14,7 +14,7 @@ class JobList
 		array_of_job_objects = []
 
 		jobs.each do |job|
-			job_and_dependancy = job.gsub(/\s+/, "").split("=>", -1)
+			job_and_dependancy = job.gsub(/\s+/, "").split("=>", -1) # -1 limit arg ensures array of 2 elements are created
 			array_of_job_objects << Job.new(job_and_dependancy[0], job_and_dependancy[1])
 		end
 		
