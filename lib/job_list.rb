@@ -2,24 +2,24 @@ require_relative 'job'
 
 class JobList
 
-	def initialize jobs
-		self.jobs = jobs
+	def initialize list_of_jobs
+		self.jobs = list_of_jobs
 	end
 
-	def jobs=(new_jobs)
-		return @jobs = [] if new_jobs == ""
+	def jobs=(list_of_jobs)
+		return @jobs = [] if list_of_jobs == ""
 
-		jobs = new_jobs.split("\n")
+		new_jobs = list_of_jobs.split("\n")
 
-		array_of_job_objects = []
+		all_jobs = []
 
-		jobs.each do |job|
+		new_jobs.each do |job|
 			job_and_dependancy = job.gsub(/\s+/, "").split("=>", -1) # -1 limit arg ensures array of 2 elements are created
-			array_of_job_objects << Job.new(job_and_dependancy[0], job_and_dependancy[1])
+			all_jobs << Job.new(job_and_dependancy[0], job_and_dependancy[1])
 		end
 		
-		circular_dependancies?(array_of_job_objects.reject { |job| job.dependancy_id == "" })
-		@jobs = order_jobs(array_of_job_objects)
+		circular_dependancies?(all_jobs.reject { |job| job.dependancy_id == "" })
+		@jobs = order_jobs(all_jobs)
 
 	rescue SelfDependancyError, CircularDependancyError => e
 		puts e.message
@@ -32,23 +32,23 @@ class JobList
 
 	private
 
-	def order_jobs(array_of_job_objects)
-		jobs_with_dependancy = array_of_job_objects.select { |job| job.dependancy_id != "" }
+	def order_jobs(all_jobs)
+		jobs_with_dependancy = all_jobs.select { |job| job.dependancy_id != "" }
 
 		jobs_with_dependancy.each do |dependant_job|
-			dependacy_index = array_of_job_objects.find_index {|job| dependant_job.dependancy_id == job.job_id}
-			dependant_index = array_of_job_objects.find_index {|job| dependant_job.job_id == job.job_id}
+			dependacy_index = all_jobs.find_index {|job| dependant_job.dependancy_id == job.job_id}
+			dependant_index = all_jobs.find_index {|job| dependant_job.job_id == job.job_id}
 
-			array_of_job_objects.insert(dependant_index, array_of_job_objects.delete_at(dependacy_index)) if dependacy_index > dependant_index
+			all_jobs.insert(dependant_index, all_jobs.delete_at(dependacy_index)) if dependacy_index > dependant_index
 		end
 
-		return array_of_job_objects
+		return all_jobs
 	end
 
-	def circular_dependancies?(array_of_job_objects)
+	def circular_dependancies?(all_jobs)
 		job_and_dependancy = Hash.new
 
-		array_of_job_objects.each do |job|
+		all_jobs.each do |job|
 			x_id = recursive_find(job_and_dependancy, job.job_id)
 			y_id = recursive_find(job_and_dependancy, job.dependancy_id)
 
